@@ -13,7 +13,10 @@ You can define user (application.yaml).
 //TODO currently it only support one user to be parameterised
 
 ##run
+    gide install
+    go build && go install
     yossh
+
     source ~/.bash_profile # or start open new terminal
     
     # To ssh simple run the alias as

@@ -63,6 +63,7 @@ func main() {
 	if ! IsSSHConfigSourcedInBashProfile(bashProfilePath, yoConfigSourceStr) {
 		AppendYoSourceToBashProfile(bashProfilePath, yoConfigSourceStr)
 	}
+	logrus.Infof("run source %s or open new terminal to activate aliases", bashProfilePath)
 }
 
 func GetFileContent(filePath string) []byte  {
