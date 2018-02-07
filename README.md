@@ -12,9 +12,7 @@ You can define user (application.yaml).
 //TODO currently it only support one user to be parameterised
 
 ## run
-    gide install
-    go build && go install
-    yossh
+    ./yossh
 
     source ~/.bash_profile # or start open new terminal
     
@@ -24,3 +22,13 @@ You can define user (application.yaml).
 ### Tips
 In a team environment it will be useful to have a shared repo of aliases.
 You can create a separate repo (internal/private) to share your env.yaml and update infra_file(application.yaml)
+
+## Develop
+If you want to enhance this utility and verify the changes.
+    gide install
+    go build && go install # or 
+    go build -o ./yossh
+
+Pull request are welcome
+    
+
