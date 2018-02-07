@@ -1,0 +1,18 @@
+hash: d46a48bfc199234f794305eae67e21d693c70ebde15c2d8fe6315834079d23c4
+updated: 2018-02-07T06:26:15.70100034+05:30
+imports:
+- name: github.com/sirupsen/logrus
+  version: d682213848ed68c0a260ca37d6dd5ace8423f5ba
+- name: golang.org/x/crypto
+  version: 6318898455d3ac20e7e44d0a080d43f8c3ff120b
+  subpackages:
+  - ssh/terminal
+- name: golang.org/x/sys
+  version: bb24a47a89eac6c1227fbcb2ae37a8b9ed323366
+  subpackages:
+  - unix
+- name: gopkg.in/validator.v2
+  version: 59c90c7046f643cbe0d4e7c8776c42a84ce75910
+- name: gopkg.in/yaml.v2
+  version: e4d366fc3c7938e2958e662b4258c7a89e1f0e3e
+testImports: []
