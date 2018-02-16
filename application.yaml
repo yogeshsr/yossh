@@ -1,2 +1,8 @@
-user: yogeshs
-infra_file: /Users/yogeshsr/go/src/github.com/yogeshsr/points-infra-details/env.yaml
+user_names:
+  #form some reason user_token key was not getting read
+  - usertoken: user_google_cloud
+    username: yogeshs
+  - usertoken: user_aws
+    username: yogesh.s
+
+infra_file: "/Users/yogeshsr/go/src/points_infra_details/env.yaml"

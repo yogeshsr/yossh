@@ -13,44 +13,33 @@ import (
 )
 
 type ApplicationYaml struct {
-	User string `yaml:"user"`
-	InfraFilePath string `yaml:"infra_file"`
+	UserNames     []UsersNames `yaml:"user_names"`
+	InfraFilePath string       `yaml:"infra_file"`
+}
+
+type UsersNames struct {
+	UserToken string `yaml: "usertoken" validate:"nonzero"`
+	UserName string `yaml: "username" validate:"nonzero"`
 }
 
 type SSHConfig struct {
-	Env string `validate:"nonzero"`
-	User string `validate:"nonzero"`
+	Env      string `validate:"nonzero"`
+	UserName string `yaml:"user_name" validate:"nonzero"`
 	Config []struct{
-		HostAlias string `yaml:"hostAlias" validate:"nonzero"`
+		HostAlias string `yaml:"host_alias" validate:"nonzero"`
 		Host  string `validate:"nonzero"`
 	}
 }
 
-var sshConfigDataSample = `
-- env: s
-  user: ubuntu
-  config:
-    - hostAlias: token-service-01
-      host: 10.14.1.214
-    - hostAlias: voucher-service-01
-      host: 10.14.1.182
-
-- env: p
-  user: ${user}
-  config:
-    - hostAlias: token-service-01
-      host: 10.20.1.214
-`
-
 func main() {
 	app := GetConfigEnvUser("Application.yaml")
-	logrus.Info("configured user: ", app.User)
+	logrus.Info("configured users: ", app.UserNames[0])
 
 	infraFileContent := GetFileContent(app.InfraFilePath)
 
 	yoConfigContent := GetYoConfigContent(string(infraFileContent))
 
-	aliases := GetAliases(yoConfigContent, app.User)
+	aliases := GetAliases(yoConfigContent, app.UserNames)
 	logrus.Info(aliases)
 
 	userHomeDir := GetUserHomeDir()
@@ -95,7 +84,7 @@ func GetYoConfigContent(yamlContent string) []SSHConfig  {
 	return sshConfig
 }
 
-func GetAliases(sshConfig []SSHConfig, configUser string) string  {
+func GetAliases(sshConfig []SSHConfig, usersNames []UsersNames) string  {
 	var aliases []string
 
 	for i:=0; i<len(sshConfig); i++ {
@@ -109,14 +98,21 @@ func GetAliases(sshConfig []SSHConfig, configUser string) string  {
 		configItems := sshConfigItem.Config
 		for j := 0; j < len(configItems); j++ {
 			configItem := configItems[j]
-			user := sshConfigItem.User
-			if user == "${user}" {
-				user = configUser
-			}
-			aliases = append(aliases, fmt.Sprintf("alias %s=\"ssh %s@%s\"", configItem.HostAlias, user, configItem.Host) )
+			userName := findUserName(usersNames, sshConfigItem.UserName)
+			aliases = append(aliases, fmt.Sprintf("alias %s=\"ssh %s@%s\"", configItem.HostAlias, userName, configItem.Host) )
 		}
 	}
 	return strings.Join(aliases, "\n")
+}
+
+func findUserName(userNames []UsersNames, userToken string) string  {
+	for _,v := range userNames {
+		logrus.Error(v.UserToken)
+		if fmt.Sprintf("${%s}", v.UserToken) == userToken {
+			return v.UserName
+		}
+	}
+	panic(fmt.Sprintf("no user token defined in application.yaml for user: %s", userToken))
 }
 
 func CreateYoConfig(yoConfigPath string, yoConfigContent string)  {
