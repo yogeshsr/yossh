@@ -3,13 +3,11 @@ It’s quite easy to setup up aliases for your shell.
 
 ## yo ssh
 yossh is a utility (golang based) to create aliases to frequently used ssh commands.
-yossh reads infra_file (application.yaml) to get your infra details.
+yossh reads your infra_file and substitutes token defined in application.yaml.
 
-See the sample **env.yaml**
+See the sample **env.yaml** and **application.yaml**
+
 yossh create .yo_config with aliases in your home directory and appends (if not already) to your bash_profile
-
-You can define user (application.yaml).
-//TODO currently it only support one user to be parameterised
 
 ## run
     ./yossh
@@ -20,8 +18,8 @@ You can define user (application.yaml).
     p-bla-app-01
     
 ### Tips
-In a team environment it will be useful to have a shared repo of aliases.
-You can create a separate repo (internal/private) to share your env.yaml and update infra_file(application.yaml)
+In a team environment it will be useful to have a shared repo for infra_file.
+You can create a separate repo (internal/private) to share your env.yaml and update infra_file path in application.yaml
 
 ## Develop
 If you want to enhance this utility and verify the changes.

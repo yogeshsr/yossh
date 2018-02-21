@@ -1,8 +1,7 @@
 user_names:
-  #form some reason user_token key was not getting read
   - usertoken: user_google_cloud
     username: yogeshs
   - usertoken: user_aws
     username: yogesh.s
 
-infra_file: "/Users/yogeshsr/go/src/points_infra_details/env.yaml"
+infra_file: "/Users/yogeshsr/go/src/my_cool_team_infra_repo/env.yaml"
