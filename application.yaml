@@ -4,4 +4,4 @@ user_names:
   - usertoken: user_aws
     username: yogesh.s
 
-infra_file: "/Users/yogeshsr/go/src/my_cool_team_infra_repo/env.yaml"
+infra_file: "env.yaml"
