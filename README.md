@@ -1,6 +1,8 @@
 It’s daunting to remember/find ssh details to the remote machines.
 It’s quite easy to setup up aliases for your shell.
 
+![yossh](https://github.com/yogeshsr/yossh/blob/master/tty.gif "yossh")
+
 ## yo ssh
 yossh is a utility (golang based) to create aliases to frequently used ssh commands.
 yossh reads your infra_file and substitutes token defined in application.yaml.
