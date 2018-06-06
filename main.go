@@ -33,7 +33,7 @@ type SSHConfig struct {
 
 func main() {
 	app := GetConfigEnvUser("Application.yaml")
-	logrus.Info("configured users: ", app.UserNames[0])
+	logrus.Info("configured users: ", app.UserNames)
 
 	infraFileContent := GetFileContent(app.InfraFilePath)
 
@@ -41,6 +41,7 @@ func main() {
 
 	aliases := GetAliases(yoConfigContent, app.UserNames)
 	logrus.Info(aliases)
+	logrus.Info("yoConfigContent")
 
 	userHomeDir := GetUserHomeDir()
 	yoConfigPath := path.Join(userHomeDir, ".yo_config")
@@ -107,7 +108,6 @@ func GetAliases(sshConfig []SSHConfig, usersNames []UsersNames) string  {
 
 func findUserName(userNames []UsersNames, userToken string) string  {
 	for _,v := range userNames {
-		logrus.Error(v.UserToken)
 		if fmt.Sprintf("${%s}", v.UserToken) == userToken {
 			return v.UserName
 		}
