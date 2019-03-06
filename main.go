@@ -32,16 +32,23 @@ type SSHConfig struct {
 }
 
 func main() {
-	app := GetConfigEnvUser("Application.yaml")
+	appYamlPath := "Application.yaml"
+
+	if len(os.Args) == 2 {
+		appYamlPath = os.Args[1]
+		logrus.Infof("Using config yaml from path: %s", appYamlPath)
+	}
+
+	app := GetConfigEnvUser(appYamlPath)
 	logrus.Info("configured users: ", app.UserNames)
 
 	infraFileContent := GetFileContent(app.InfraFilePath)
 
 	yoConfigContent := GetYoConfigContent(string(infraFileContent))
 
-	aliases := GetAliases(yoConfigContent, app.UserNames)
-	logrus.Info(aliases)
-	logrus.Info("yoConfigContent")
+	aliases := createAliases(yoConfigContent, app.UserNames)
+	//logrus.Info(aliases)
+	//logrus.Info("yoConfigContent")
 
 	userHomeDir := GetUserHomeDir()
 	yoConfigPath := path.Join(userHomeDir, ".yo_config")
@@ -50,10 +57,16 @@ func main() {
 	CreateYoConfig(yoConfigPath, aliases)
 
 	bashProfilePath := GetBashProfilePath(userHomeDir)
-	if ! IsSSHConfigSourcedInBashProfile(bashProfilePath, yoConfigSourceStr) {
-		AppendYoSourceToBashProfile(bashProfilePath, yoConfigSourceStr)
+	if ! IsYoConfigSourcedInFile(bashProfilePath, yoConfigSourceStr) {
+		AppendYoSourceToFile(bashProfilePath, yoConfigSourceStr)
 	}
-	logrus.Infof("run source %s or open new terminal to activate aliases", bashProfilePath)
+
+	zshrcPath := GetZshrcPath(userHomeDir)
+	if ! IsYoConfigSourcedInFile(zshrcPath, yoConfigSourceStr) {
+		AppendYoSourceToFile(zshrcPath, yoConfigSourceStr)
+	}
+
+	logrus.Infof("Open new terminal to activate aliases", bashProfilePath)
 }
 
 func GetFileContent(filePath string) []byte  {
@@ -85,7 +98,7 @@ func GetYoConfigContent(yamlContent string) []SSHConfig  {
 	return sshConfig
 }
 
-func GetAliases(sshConfig []SSHConfig, usersNames []UsersNames) string  {
+func createAliases(sshConfig []SSHConfig, usersNames []UsersNames) string  {
 	var aliases []string
 
 	for i:=0; i<len(sshConfig); i++ {
@@ -138,8 +151,8 @@ func CreateYoConfig(yoConfigPath string, yoConfigContent string)  {
 	}
 }
 
-func AppendYoSourceToBashProfile(bashfilePath string, yoSourceStr string)  {
-	logrus.Info("Appending yo_config to bash_profile")
+func AppendYoSourceToFile(bashfilePath string, yoSourceStr string)  {
+	logrus.Infof("Appending yo_config to %s", bashfilePath)
 	f, err := os.OpenFile(bashfilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		logrus.Fatal(err)
@@ -153,9 +166,15 @@ func AppendYoSourceToBashProfile(bashfilePath string, yoSourceStr string)  {
 }
 
 func GetBashProfilePath(userHomeDir string) string {
-	bashProfile := path.Join(userHomeDir,".bash_profile")
-	logrus.Info("bash profile: ",bashProfile)
-	return bashProfile
+	filePath := path.Join(userHomeDir,".bash_profile")
+	logrus.Info("bash profile: ", filePath)
+	return filePath
+}
+
+func GetZshrcPath(userHomeDir string) string {
+	filePath := path.Join(userHomeDir,".zshrc")
+	logrus.Info(".zshrc profile: ", filePath)
+	return filePath
 }
 
 func GetUserHomeDir() string {
@@ -165,7 +184,7 @@ func GetUserHomeDir() string {
 	return home
 }
 
-func IsSSHConfigSourcedInBashProfile(bashfilePath string, yoConfigPath string) bool  {
+func IsYoConfigSourcedInFile(bashfilePath string, yoConfigPath string) bool  {
 	file, err := os.Open(bashfilePath)
 	if err != nil {
 		logrus.Fatal(err)

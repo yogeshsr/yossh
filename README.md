@@ -13,6 +13,8 @@ yossh create .yo_config with aliases in your home directory and appends (if not 
 
 ## run
     ./yossh
+    or
+    ./yossh /path/to/application.yaml
 
     source ~/.bash_profile # or start open new terminal
     
