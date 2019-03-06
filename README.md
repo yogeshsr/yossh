@@ -10,16 +10,16 @@ See the sample **env.yaml** and **application.yaml**
 yossh creates .yo_config with aliases in your home directory and appends (if not already) to your bash_profile & zshrc
 
 ## run
-    Download the [yossh](yossh) file.
-    ./yossh /path/to/application.yaml
+Download the [yossh](yossh) file.
+    
+    # ./yossh /path/to/application.yaml
 
     or run below if application.yaml file is in the same folder.
-    ./yossh
+    # ./yossh
 
-    Open new terminal to activate aliases
-    
-    # To ssh simple run the alias as
-    p-bla-app-01
+    Open new terminal to activate aliases.
+    To ssh simple run the alias as-
+    # p-bla-app-01
     
 ### Tips
 In a team environment it will be useful to have a shared repo for infra_file.
