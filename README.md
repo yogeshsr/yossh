@@ -1,22 +1,22 @@
 It’s daunting to remember/find ssh details to the remote machines.
-It’s quite easy to setup up aliases for your shell.
-
-![yossh](https://github.com/yogeshsr/yossh/blob/master/tty.gif "yossh")
+yossh makes it quite easy to setup up aliases for your shell.
 
 ## yo ssh
 yossh is a utility (golang based) to create aliases to frequently used ssh commands.
-yossh reads your infra_file and substitutes token defined in application.yaml.
+yossh reads your infra_file and substitutes user_name tokens defined for the respective env in application.yaml.
 
 See the sample **env.yaml** and **application.yaml**
 
-yossh create .yo_config with aliases in your home directory and appends (if not already) to your bash_profile
+yossh creates .yo_config with aliases in your home directory and appends (if not already) to your bash_profile & zshrc
 
 ## run
-    ./yossh
-    or
+    Download the [yossh](yossh) file.
     ./yossh /path/to/application.yaml
 
-    source ~/.bash_profile # or start open new terminal
+    or run below if application.yaml file is in the same folder.
+    ./yossh
+
+    Open new terminal to activate aliases
     
     # To ssh simple run the alias as
     p-bla-app-01
