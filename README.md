@@ -27,9 +27,10 @@ You can create a separate repo (internal/private) to share your env.yaml and upd
 
 ## Develop
 If you want to enhance this utility and verify the changes.
+
     gide install
-    go build && go install # or 
-    go build -o ./yossh
+    go build && go install # or go build -o ./yossh
+    yossh
 
 Pull request are welcome
     
